@@ -7,13 +7,13 @@ Nix flake for [Cursor](https://cursor.com) - tracks latest releases automaticall
 ## Install
 
 ```bash
-nix profile install github:you/cursor-nix
+nix profile install github:jlevere/cursor
 ```
 
 ## Run
 
 ```bash
-nix run github:you/cursor-nix
+nix run github:jlevere/cursor
 ```
 
 ## Use in Configuration
@@ -22,7 +22,7 @@ nix run github:you/cursor-nix
 
 ```nix
 {
-  inputs.cursor.url = "github:you/cursor-nix";
+  inputs.cursor.url = "github:jlevere/cursor";
   
   outputs = { cursor, ... }: {
     environment.systemPackages = [ cursor.packages.x86_64-linux.cursor ];
@@ -34,7 +34,7 @@ nix run github:you/cursor-nix
 
 ```nix
 {
-  inputs.cursor.url = "github:you/cursor-nix";
+  inputs.cursor.url = "github:jlevere/cursor";
   
   outputs = { cursor, nixpkgs, ... }: {
     environment.systemPackages = [
