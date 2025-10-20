@@ -18,41 +18,35 @@
           versionData = builtins.head (builtins.filter (v: v.version == version) versionsData.versions);
         in versionData;
       
-      # Build Cursor from AppImage
+      # Build Cursor from AppImage using vscode-generic (like nixpkgs)
+      # This avoids FHS sandboxing issues (no_new_privs) and properly handles native modules
       buildCursor = pkgs: { version, url, sha256 }: 
         let
           src = pkgs.fetchurl { inherit url sha256; };
           
-          contents = pkgs.appimageTools.extract {
+          extracted = pkgs.appimageTools.extract {
             inherit version src;
             pname = "cursor";
           };
         in
-        pkgs.appimageTools.wrapType2 {
-          inherit version src;
+        pkgs.callPackage "${pkgs.path}/pkgs/applications/editors/vscode/generic.nix" rec {
+          inherit version;
           pname = "cursor";
+          executableName = "cursor";
+          longName = "Cursor";
+          shortName = "cursor";
           
-          # appimageTools.wrapType2 already includes most libraries via defaultFhsEnvArgs
-          # Only add extras if needed for specific functionality
-          extraPkgs = pkgs: [ ];
+          # Extract VSCode version from product.json if available, or use a reasonable default
+          vscodeVersion = "1.96.2";
           
-          extraInstallCommands = ''
-            # Desktop file
-            install -Dm644 ${contents}/cursor.desktop $out/share/applications/cursor.desktop
-            substituteInPlace $out/share/applications/cursor.desktop \
-              --replace-fail 'Exec=cursor' 'Exec=${placeholder "out"}/bin/cursor' \
-              --replace-fail 'Icon=co.anysphere.cursor' 'Icon=cursor'
-            
-            # Icons
-            for size in 22 24 32 48 64 128 256 512; do
-              install -Dm644 ${contents}/usr/share/icons/hicolor/''${size}x''${size}/apps/cursor.png \
-                $out/share/icons/hicolor/''${size}x''${size}/apps/cursor.png
-            done
-            
-            # Pixmap
-            install -Dm644 ${contents}/usr/share/pixmaps/co.anysphere.cursor.png \
-              $out/share/pixmaps/cursor.png
-          '';
+          src = extracted;
+          sourceRoot = "usr/share/cursor";
+          
+          commandLineArgs = "--update=false";
+          useVSCodeRipgrep = false;
+          
+          # We manage updates via our own update.sh script
+          updateScript = null;
           
           meta = with pkgs.lib; {
             description = "AI-powered code editor built on VSCode";
@@ -62,7 +56,6 @@
             maintainers = [ ];
             mainProgram = "cursor";
             platforms = [ "x86_64-linux" "aarch64-linux" ];
-            # Note: macOS .dmg packaging not supported, Linux AppImage only
           };
         };
     in
