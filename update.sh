@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#! nix-shell -i bash -p curl jq nix
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -6,11 +7,6 @@ VERSIONS_FILE="$SCRIPT_DIR/versions.json"
 
 log() { echo "[$(date -Iseconds)] $*" >&2; }
 die() { log "ERROR: $*"; exit 1; }
-
-# Check dependencies
-for cmd in jq curl nix-prefetch-url; do
-    command -v "$cmd" &>/dev/null || die "Missing dependency: $cmd"
-done
 
 # Fetch latest version from Cursor's JSON API
 log "Fetching latest version..."
