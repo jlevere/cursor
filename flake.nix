@@ -64,12 +64,6 @@
             mainProgram = "cursor";
             platforms = [ "x86_64-linux" "aarch64-linux" ];
           };
-        }).overrideAttrs (oldAttrs: {
-          # Create bin symlink like nixpkgs does
-          preInstall = (oldAttrs.preInstall or "") + ''
-            mkdir -p bin
-            ln -s ../cursor bin/cursor
-          '';
         });
     in
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
