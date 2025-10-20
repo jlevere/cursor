@@ -58,7 +58,6 @@
             description = "AI-powered code editor built on VSCode";
             homepage = "https://cursor.com";
             changelog = "https://cursor.com/changelog";
-            license = licenses.unfree;
             sourceProvenance = with sourceTypes; [ binaryNativeCode ];
             maintainers = [ ];
             mainProgram = "cursor";
