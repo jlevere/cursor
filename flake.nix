@@ -11,12 +11,13 @@
       # Load versions from JSON file
       versionsData = builtins.fromJSON (builtins.readFile ./versions.json);
       
-      # Get version info (default to latest)
-      getVersionInfo = versionNum: 
+      # Get version info for a specific system (default to latest)
+      getVersionInfo = system: versionNum: 
         let
           version = if versionNum == null then versionsData.latest else versionNum;
           versionData = builtins.head (builtins.filter (v: v.version == version) versionsData.versions);
-        in versionData;
+          platformData = versionData.${system};
+        in { inherit version; } // platformData;
       
       # Build Cursor from AppImage using vscode-generic (like nixpkgs)
       # This avoids FHS sandboxing issues (no_new_privs) and properly handles native modules
@@ -29,23 +30,29 @@
             pname = "cursor";
           };
         in
-        pkgs.callPackage "${pkgs.path}/pkgs/applications/editors/vscode/generic.nix" rec {
+        (pkgs.callPackage "${pkgs.path}/pkgs/applications/editors/vscode/generic.nix" rec {
           inherit version;
           pname = "cursor";
           executableName = "cursor";
           longName = "Cursor";
           shortName = "cursor";
+          libraryName = "cursor";
+          iconName = "cursor";
           
-          # Extract VSCode version from product.json if available, or use a reasonable default
+          # VSCode version - can be found in About dialog
           vscodeVersion = "1.96.2";
           
           src = extracted;
-          sourceRoot = "usr/share/cursor";
+          # sourceRoot must include the extracted directory name
+          sourceRoot = "${pname}-${version}-extracted/usr/share/cursor";
           
           commandLineArgs = "--update=false";
           useVSCodeRipgrep = false;
           
-          # We manage updates via our own update.sh script
+          # Cursor has no wrapper script
+          patchVSCodePath = false;
+          
+          # updateScript is for nixpkgs tooling; we use apps.update and GitHub Actions instead
           updateScript = null;
           
           meta = with pkgs.lib; {
@@ -57,12 +64,18 @@
             mainProgram = "cursor";
             platforms = [ "x86_64-linux" "aarch64-linux" ];
           };
-        };
+        }).overrideAttrs (oldAttrs: {
+          # Create bin symlink like nixpkgs does
+          preInstall = (oldAttrs.preInstall or "") + ''
+            mkdir -p bin
+            ln -s ../cursor bin/cursor
+          '';
+        });
     in
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        latestVersionInfo = getVersionInfo null;
+        latestVersionInfo = getVersionInfo system null;
       in
       {
         packages = {
@@ -93,7 +106,7 @@
       lib.buildVersion = system: versionNum: 
         let 
           pkgs = import nixpkgs { inherit system; };
-          versionInfo = getVersionInfo versionNum;
+          versionInfo = getVersionInfo system versionNum;
         in buildCursor pkgs {
           version = versionInfo.version;
           url = versionInfo.url;
