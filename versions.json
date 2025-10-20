@@ -1,0 +1,21 @@
+{
+  "_comment": "Version history maintained automatically. Pin via: cursor.lib.buildVersion system version",
+  "latest": "1.7.52",
+  "versions": [
+    {
+      "version": "1.5.5",
+      "url": "https://downloads.cursor.com/production/823f58d4f60b795a6aefb9955933f3a2f0331d7b/linux/x64/Cursor-1.5.5-x86_64.AppImage",
+      "sha256": "0h7rv1s0f4w2h4k9x2j3m5p6q8r9t1v3w5y7z0a2b4d6f8h0j2k4"
+    },
+    {
+      "version": "1.6.0",
+      "url": "https://downloads.cursor.com/production/d01860bc5f5a36b62f8a77cd42578126270db343/linux/x64/Cursor-1.6.0-x86_64.AppImage",
+      "sha256": "1m8sw2t1g5x3j6l8n9q2s4v7y0z3b5e7h9k1m3o5q7s9u1w3y5a7"
+    },
+    {
+      "version": "1.7.52",
+      "url": "https://downloads.cursor.com/production/9675251a06b1314d50ff34b0cbe5109b78f848cd/linux/x64/Cursor-1.7.52-x86_64.AppImage",
+      "sha256": "0d56c6h8fd6bdywkpxhz769jkw0x0sg5141805p6zzirf5sw644y"
+    }
+  ]
+}
