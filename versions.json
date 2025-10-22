@@ -6,10 +6,6 @@
       "x86_64-linux": {
         "url": "https://downloads.cursor.com/production/9675251a06b1314d50ff34b0cbe5109b78f848cd/linux/x64/Cursor-1.7.52-x86_64.AppImage",
         "sha256": "0d56c6h8fd6bdywkpxhz769jkw0x0sg5141805p6zzirf5sw644y"
-      },
-      "aarch64-linux": {
-        "url": "https://downloads.cursor.com/production/9675251a06b1314d50ff34b0cbe5109b78f848cd/linux/arm64/Cursor-1.7.52-aarch64.AppImage",
-        "sha256": "0kdy5anqdixd05v6gq44f7qlr94kjrm5na1g2f1lrb4wk79cpb7p"
       }
     }
   ],

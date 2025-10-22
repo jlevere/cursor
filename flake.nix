@@ -62,11 +62,11 @@
             sourceProvenance = with sourceTypes; [ binaryNativeCode ];
             maintainers = [ ];
             mainProgram = "cursor";
-            platforms = [ "x86_64-linux" "aarch64-linux" ];
+            platforms = [ "x86_64-linux" ];
           };
         });
     in
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
         pkgs = import nixpkgs { inherit system; };
         latestVersionInfo = getVersionInfo system null;

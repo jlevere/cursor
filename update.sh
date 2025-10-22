@@ -11,7 +11,6 @@ die() { log "ERROR: $*"; exit 1; }
 # Platform mapping: nix-system -> cursor-api-platform
 declare -A platforms=(
     [x86_64-linux]='linux-x64'
-    [aarch64-linux]='linux-arm64'
 )
 
 log "Fetching latest versions for all platforms..."
@@ -72,12 +71,9 @@ NEW_ENTRY=$(jq -n \
     --arg v "$VERSION" \
     --arg x64_url "${platform_data[x86_64-linux]}" \
     --arg x64_hash "${platform_hashes[x86_64-linux]}" \
-    --arg arm64_url "${platform_data[aarch64-linux]}" \
-    --arg arm64_hash "${platform_hashes[aarch64-linux]}" \
     '{
         version: $v,
-        "x86_64-linux": {url: $x64_url, sha256: $x64_hash},
-        "aarch64-linux": {url: $arm64_url, sha256: $arm64_hash}
+        "x86_64-linux": {url: $x64_url, sha256: $x64_hash}
     }')
 
 if [ ! -f "$VERSIONS_FILE" ]; then
