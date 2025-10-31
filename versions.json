@@ -35,7 +35,14 @@
         "url": "https://downloads.cursor.com/production/a9b73428ca6aeb2d24623da2841a271543735562/linux/x64/Cursor-2.0.40-x86_64.AppImage",
         "sha256": "0blw66a7h2825c50m583mvffpyk4zgkpkfs5lw7r4mvqqspaj0h7"
       }
+    },
+    {
+      "version": "2.0.43",
+      "x86_64-linux": {
+        "url": "https://downloads.cursor.com/production/8e4da76ad196925accaa169efcae28c45454cce3/linux/x64/Cursor-2.0.43-x86_64.AppImage",
+        "sha256": "05hk9xlnwyrnxqg2ny7nspmcrcwmjv3bqi8ywpddvxa836wbnkx2"
+      }
     }
   ],
-  "latest": "2.0.40"
+  "latest": "2.0.43"
 }
